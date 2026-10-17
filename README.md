@@ -6,8 +6,7 @@
 <br>
 
 I help organisations build compliance programmes that hold up under audit and still make
-sense to the people who run them: ISO 27001, ISO 42001, SOC 2, and the governance layer
-underneath AI adoption.
+sense to the people who run them.
 
 <h3><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/section-work-dark.svg">
@@ -21,10 +20,9 @@ underneath AI adoption.
 - AI governance and risk
 
 **Building**
-- Claude Code agents and plugins that take the repetitive parts out of GRC delivery
-- A git-backed personal knowledge system (Obsidian + Claude Code) that runs my days
-- Python and PowerShell tooling for compliance work
-- Power Platform automation for compliance workflows
+- Agents and plugins that take the repetitive parts out of GRC delivery
+- A git-backed personal knowledge system that runs my days
+- Scripts and automation for compliance workflows
 
 <sub>Most of it lives in private repositories, because it sits close to client work.</sub>
 
@@ -38,8 +36,6 @@ underneath AI adoption.
   <img alt="ISO/IEC 42001 Lead Auditor (Mastermind, 2025); ISO/IEC 27001 Lead Auditor (Mastermind, 2025); ISO/IEC 27001 Implementer (PECB, 2024)." src="assets/certs-light.svg" width="100%">
 </picture>
 
-<sub>ISO/IEC 42001 Lead Auditor, Mastermind 2025 · ISO/IEC 27001 Lead Auditor, Mastermind 2025 · ISO/IEC 27001 Implementer, PECB 2024</sub>
-
 <h3><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/section-stack-dark.svg">
   <img alt="03. Stack: what I build with." src="assets/section-stack-light.svg" width="100%">
@@ -49,8 +45,6 @@ underneath AI adoption.
   <source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg">
   <img alt="Python, PowerShell, TypeScript, Claude Code, Obsidian, Power Platform, GitHub Actions, Git." src="assets/stack-light.svg" width="100%">
 </picture>
-
-<sub>Python · PowerShell · TypeScript · Claude Code · Obsidian · Power Platform · GitHub Actions · Git</sub>
 
 <h3><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/section-beyond-dark.svg">

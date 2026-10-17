@@ -137,7 +137,7 @@ FRAMEWORKS = ["ISO 27001", "ISO 42001", "SOC 2", "DORA", "EU AI ACT", "GDPR", "P
 
 
 def banner(t):
-    W, H = 1200, 420
+    W, H = 1200, 384
     s = Svg(W, H, "Callum Stegmann. Senior GRC Consultant at Scytale, Cape Town. "
                   "Building management systems that protect the people on the receiving end.")
     s.css.append(FADE)
@@ -171,12 +171,18 @@ def banner(t):
         f'<rect width="{W}" height="{H}" rx="18" fill="url(#dots)" mask="url(#m)"/>'
     )
 
-    # Top bar: name left, location right.
-    s.text(60, 60, "CALLUM STEGMANN", "monob", MONO_MIN, t["ink"], "f d1", tracking=3)
-    loc = "CAPE TOWN · SOUTH AFRICA"
-    lx = W - 60 - width(loc, "mono", MONO_MIN, 2) + 2
-    s.raw(f'<circle class="pulse" cx="{lx - 16:.1f}" cy="54.5" r="4" fill="{t["accent"]}"/>')
-    s.text(lx, 60, loc, "mono", MONO_MIN, t["mute"], "f d1", tracking=2)
+    # Top bar: location left, frameworks ticker right. The name lives once, below.
+    s.raw(f'<circle class="pulse" cx="64" cy="54.5" r="4" fill="{t["accent"]}"/>')
+    s.text(80, 60, "CAPE TOWN · SOUTH AFRICA", "mono", MONO_MIN, t["mute"], "f d1", tracking=2)
+    label = "NOW DELIVERING"
+    tx = W - 60 - max(width(fw, "monob", MONO_MIN, 2) for fw in FRAMEWORKS) + 2
+    s.text(tx - 36 - width(label, "mono", MONO_MIN, 2), 60, label, "mono", MONO_MIN, t["mute"],
+           "f d1", tracking=2)
+    s.raw(f'<line class="f d1" x1="{tx - 24:.1f}" y1="54.5" x2="{tx - 10:.1f}" y2="54.5" '
+          f'stroke="{t["accent"]}" stroke-width="1.5"/>')
+    for i, fw in enumerate(FRAMEWORKS):
+        s.text(tx, 60, fw, "monob", MONO_MIN, t["accent"], "cy cy0" if i == 0 else "cy",
+               tracking=2, extra=f'style="animation-delay:{i * step:.1f}s"')
     s.raw(f'<line x1="60" y1="86" x2="{W - 60}" y2="86" stroke="{t["line"]}"/>')
 
     # Left gutter: section numeral, as on the site.
@@ -194,19 +200,6 @@ def banner(t):
           f'stroke="{t["accent"]}" stroke-width="2"/>')
     s.text(x0, 296, "Building management systems that protect", "serif", 31, t["soft"], "f d2")
     s.text(x0, 332, "the people on the receiving end.", "serif", 31, t["soft"], "f d3")
-
-    # Bottom row: frameworks ticker and coordinates.
-    s.raw(f'<line x1="60" y1="362" x2="{W - 60}" y2="362" stroke="{t["line"]}"/>')
-    label = "NOW DELIVERING"
-    s.text(x0, 395, label, "mono", MONO_MIN, t["mute"], "f d4", tracking=2)
-    tx = x0 + width(label, "mono", MONO_MIN, 2) + 36
-    s.raw(f'<line class="f d4" x1="{tx - 24:.1f}" y1="389.5" x2="{tx - 10:.1f}" y2="389.5" '
-          f'stroke="{t["accent"]}" stroke-width="1.5"/>')
-    for i, fw in enumerate(FRAMEWORKS):
-        s.text(tx, 395, fw, "monob", MONO_MIN, t["accent"], "cy cy0" if i == 0 else "cy",
-               tracking=2, extra=f'style="animation-delay:{i * step:.1f}s"')
-    s.text(W - 60, 395, "33.92° S · 18.42° E", "mono", MONO_MIN, t["mute"], "f d4",
-           tracking=2, anchor="end")
 
     # Auditor's seal: ring text (decorative) around a tick that draws itself in.
     ring = "GOVERNANCE · RISK · COMPLIANCE · "
@@ -247,18 +240,19 @@ def cert_text():
 
 
 def certs(t):
-    W, H, gap = 1200, 180, 24
+    W, H, gap = 1200, 232, 24
     cw = (W - 2 * gap) / 3
     s = Svg(W, H, cert_text() + ".")
     for i, (n, std, role, issuer, year) in enumerate(CERTS):
         x = i * (cw + gap)
         s.raw(f'<rect x="{x + .5:.1f}" y=".5" width="{cw - 1:.1f}" height="{H - 1}" '
               f'rx="14" fill="{t["panel"]}" stroke="{t["line"]}"/>')
-        s.text(x + 28, 60, n, "serif", 40, t["accent"])
-        s.text(x + cw - 28, 52, f"{issuer.upper()} · {year}", "mono", MONO_MIN, t["mute"],
+        s.text(x + 28, 68, n, "serif", 48, t["accent"])
+        s.text(x + cw - 28, 60, f"{issuer.upper()} · {year}", "mono", 20, t["mute"],
                tracking=1.5, anchor="end")
-        s.text(x + 28, 118, std, "sans", 30, t["ink"], tracking=-0.6)
-        s.text(x + 28, 152, role, "serif", 27, t["soft"])
+        assert width(std, "sans", 40, -0.8) < cw - 56, std
+        s.text(x + 28, 152, std, "sans", 40, t["ink"], tracking=-0.8)
+        s.text(x + 28, 198, role, "serif", 35, t["soft"])
     return s.render()
 
 
@@ -267,10 +261,10 @@ STACK = ["Python", "PowerShell", "TypeScript", "Claude Code", "Obsidian",
 
 
 def stack(t):
-    W, size, track, padx, gap, h = 1200, MONO_MIN, 1.6, 18, 10, 48
+    W, size, track, padx, gap, h = 1200, 20, 1.6, 22, 12, 58
     s = Svg(W, 0, ", ".join(STACK) + ".")
     tags = [x_.upper() for x_ in STACK]
-    widths = [width(g, "monob", size, track) - track + padx * 2 + 16 for g in tags]
+    widths = [width(g, "monob", size, track) - track + padx * 2 + 20 for g in tags]
     total = sum(widths) + gap * (len(tags) - 1)
     rows = math.ceil(total / W)
     x, y, run = 0.5, 0.5, 0.0
@@ -280,8 +274,8 @@ def stack(t):
         run += w + gap
         s.raw(f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h}" rx="{h / 2}" '
               f'fill="{t["panel"]}" stroke="{t["line"]}"/>'
-              f'<circle cx="{x + padx:.1f}" cy="{y + h / 2:.1f}" r="4" fill="{t["accent"]}"/>')
-        s.text(x + padx + 16, y + h / 2 + 5.8, tag, "monob", size, t["ink"], tracking=track)
+              f'<circle cx="{x + padx:.1f}" cy="{y + h / 2:.1f}" r="5" fill="{t["accent"]}"/>')
+        s.text(x + padx + 20, y + h / 2 + 7.2, tag, "monob", size, t["ink"], tracking=track)
         x += w + gap
     s.h = int(y + h + 1)
     return s.render()
